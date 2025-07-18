@@ -1,27 +1,29 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from app import database, alert_engine
+from app.models import LogEntry
+from app.alert_engine import process_log, get_critical_alerts
 
-app = FastAPI()
-database.init_db()
+app = FastAPI(
+    title="SupportOps Log Monitoring System",
+    description="Simulates a backend system for real-time log ingestion, classification, and alerting",
+    version="1.0.0"
+)
 
-class Log(BaseModel):
-    timestamp: str
-    severity: str
-    service: str
-    message: str
+# 🔸 POST /log — Submit a log entry
+@app.post("/log", summary="Submit a log entry")
+def receive_log(entry: LogEntry):
+    """
+    Receives a log entry and triggers an alert if severity is ERROR or CRITICAL.
+    """
+    alert_triggered = process_log(entry)
+    return {
+        "message": "Log received",
+        "alert_triggered": alert_triggered
+    }
 
-@app.post("/log")
-def receive_log(log: Log):
-    log_data = log.dict()
-    alert_engine.process_log(log_data)
-    database.insert_log(log_data)
-    return {"status": "received"}
-
-@app.get("/alerts")
-def get_alerts():
-    return alert_engine.get_alerts()
-
-@app.get("/logs")
-def get_logs():
-    return database.fetch_all_logs()
+# 🔹 GET /alerts — View critical alerts
+@app.get("/alerts", summary="Get all active critical alerts")
+def show_critical_alerts():
+    """
+    Returns a list of log entries classified as CRITICAL alerts.
+    """
+    return get_critical_alerts()
