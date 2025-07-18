@@ -1,9 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from app import alert_engine, database
+from app import database, alert_engine
 
 app = FastAPI()
-database.init_db()  # initialize DB on startup
+database.init_db()
 
 class Log(BaseModel):
     timestamp: str
@@ -14,8 +14,8 @@ class Log(BaseModel):
 @app.post("/log")
 def receive_log(log: Log):
     log_data = log.dict()
-    alert_engine.process_log(log_data)  # logic for alerts
-    database.insert_log(log_data)  # save to DB
+    alert_engine.process_log(log_data)
+    database.insert_log(log_data)
     return {"status": "received"}
 
 @app.get("/alerts")
