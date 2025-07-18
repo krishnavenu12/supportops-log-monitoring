@@ -2,21 +2,33 @@
 
 ![CI](https://github.com/krishnavenu12/supportops-log-monitoring/actions/workflows/test.yml/badge.svg)
 
-A real-time backend system built using FastAPI for simulating log ingestion, severity classification, and automatic alerting. Mimics real-world support environments and is integrated with GitHub Actions for CI/CD.
+A real-time backend system built using FastAPI that mimics a production support environment by simulating log ingestion, severity classification, and alerting. It’s designed to help you learn support engineering workflows like triaging, log monitoring, and backend testing.
 
 ---
 
 ## 🚀 Features
 
-- 🔍 API to submit and review logs (`/log`, `/alerts`)
-- 🚨 Alerts triggered for ERROR/CRITICAL entries
-- 🧪 Unit tests with `pytest`
-- 🔄 CI/CD with GitHub Actions
-- 📦 Clean modular Python backend (`app/`, `tests/`)
+- 📥 **POST /log** — Submit logs with severity, timestamp, service name
+- 🚨 **Automatic Alert Triggering** — For ERROR/CRITICAL logs
+- 🔍 **GET /alerts** — Retrieve triggered alerts
+- 🧪 **Test Coverage with Pytest**
+- 🔄 **CI/CD Integration with GitHub Actions**
+- 💡 **Modular Codebase** with FastAPI, reusable alert engine
 
 ---
 
-## 📦 How to Run
+## 🧰 Tech Stack
 
-```bash
-uvicorn app.main:app --reload
+- **FastAPI** for API and backend logic
+- **Python** for core logic and alert engine
+- **Pytest** for unit testing
+- **GitHub Actions** for CI/CD automation
+
+---
+
+## 📦 How to Run Locally
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/krishnavenu12/supportops-log-monitoring.git
+   cd supportops-log-monitoring
