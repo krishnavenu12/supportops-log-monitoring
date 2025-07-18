@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.models import LogEntry
-from app.alert_engine import process_log
+from app.alert_engine import process_log, get_alerts
+
 
 def test_alert_on_critical_log():
     log = LogEntry(timestamp=datetime.now(), service="API", level="CRITICAL", message="Service crashed")
