@@ -1,3 +1,4 @@
 fastapi
 uvicorn
-pytest
+pydantic
+sqlite3 ; only needed for very old environments
