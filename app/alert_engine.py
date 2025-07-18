@@ -1,21 +1,15 @@
-from datetime import datetime
 from app.models import LogEntry
-from app.alert_engine import process_log
+from app.database import logs, alerts
 
-def test_alert_on_critical_log():
-    log = LogEntry(
-        timestamp=datetime.now(),
-        service="api-service",
-        level="CRITICAL",
-        message="Service crashed"
-    )
-    assert process_log(log) is True
+SEVERITY_THRESHOLD = {"ERROR", "CRITICAL"}
 
-def test_no_alert_on_info_log():
-    log = LogEntry(
-        timestamp=datetime.now(),
-        service="web-app",
-        level="INFO",
-        message="Normal log"
-    )
-    assert process_log(log) is False
+def process_log(entry: LogEntry) -> bool:
+    logs.append(entry)
+    if entry.level.upper() in SEVERITY_THRESHOLD:
+        alerts.append(entry)
+        print(f"[ALERT] {entry.level} from {entry.service}: {entry.message}")
+        return True
+    return False
+
+def get_critical_alerts():
+    return [alert for alert in alerts if alert.level.upper() == "CRITICAL"]
