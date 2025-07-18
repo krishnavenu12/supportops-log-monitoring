@@ -69,16 +69,12 @@ For commercial or production deployment, please contact the author for permissio
 
 ---
 
+## ⭐️ If you found this useful…
+
+Give the repo a ⭐ on [GitHub](https://github.com/krishnavenu12/supportops-log-monitoring)  
+and feel free to share it with others preparing for backend support or DevOps roles!
 
 ---
 
-### ✅ Next Steps
 
-- Paste this into your `README.md`
-- Save it
-- Run:
-  ```bash
-  git add README.md
-  git commit -m "Update full README with author, license, contributing"
-  git push
 
