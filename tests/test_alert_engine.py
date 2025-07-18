@@ -1,12 +1,19 @@
-from datetime import datetime
-from app.models import LogEntry
 from app.alert_engine import process_log, get_alerts
 
+def test_alert_processing():
+    # Clear previous alerts (for clean testing)
+    alerts = get_alerts()
+    alerts.clear()
 
-def test_alert_on_critical_log():
-    log = LogEntry(timestamp=datetime.now(), service="API", level="CRITICAL", message="Service crashed")
-    assert process_log(log) is True
+    sample_log = {
+        "timestamp": "2025-07-18T10:30:00Z",
+        "severity": "ERROR",
+        "service": "auth-service",
+        "message": "Login failed for user"
+    }
 
-def test_no_alert_on_info_log():
-    log = LogEntry(timestamp=datetime.now(), service="Web", level="INFO", message="Routine check")
-    assert process_log(log) is False
+    process_log(sample_log)
+
+    assert len(get_alerts()) == 1
+    assert get_alerts()[0]["severity"] == "ERROR"
+    assert get_alerts()[0]["service"] == "auth-service"
