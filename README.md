@@ -37,7 +37,7 @@ A real-time backend system built using FastAPI that mimics a production support 
 
 ## 👨‍💻 Author
 
-```md
+
 - **Krishna Venugopal**  
   [GitHub: @krishnavenu12](https://github.com/krishnavenu12)  
   [LinkedIn](https://www.linkedin.com/in/krishna-venugopal-9b073b267/)  
