@@ -1,4 +1,5 @@
 # SupportOps Log Monitoring System
+![CI](https://github.com/krishnavenu12/supportops-log-monitoring/actions/workflows/test.yml/badge.svg)
 
 A simulation tool for real-time log monitoring and alerting using FastAPI and Python.
 
