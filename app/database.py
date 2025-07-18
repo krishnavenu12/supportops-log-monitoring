@@ -1,44 +1,42 @@
 import sqlite3
 
-DB_FILE = "logs.db"
+DB_NAME = "logs.db"
 
 def init_db():
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS logs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT,
-            severity TEXT,
-            service TEXT,
-            message TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                severity TEXT NOT NULL,
+                service TEXT NOT NULL,
+                message TEXT NOT NULL
+            );
+        """)
+        conn.commit()
 
-def insert_log(log):
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    c.execute('''
-        INSERT INTO logs (timestamp, severity, service, message)
-        VALUES (?, ?, ?, ?)
-    ''', (log["timestamp"], log["severity"], log["service"], log["message"]))
-    conn.commit()
-    conn.close()
+def fetch_logs():
+    with sqlite3.connect(DB_NAME) as conn:
+        return conn.execute("SELECT * FROM logs").fetchall()
 
-def fetch_all_logs():
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    c.execute('SELECT timestamp, severity, service, message FROM logs ORDER BY timestamp DESC')
-    rows = c.fetchall()
-    conn.close()
-    return [
-        {
-            "timestamp": row[0],
-            "severity": row[1],
-            "service": row[2],
-            "message": row[3]
-        }
-        for row in rows
-    ]
+def add_log(timestamp, severity, service, message):
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute("""
+            INSERT INTO logs (timestamp, severity, service, message)
+            VALUES (?, ?, ?, ?)
+        """, (timestamp, severity, service, message))
+        conn.commit()
+
+def delete_log(log_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute("DELETE FROM logs WHERE id = ?", (log_id,))
+        conn.commit()
+
+def update_log(log_id, timestamp, severity, service, message):
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute("""
+            UPDATE logs
+            SET timestamp = ?, severity = ?, service = ?, message = ?
+            WHERE id = ?
+        """, (timestamp, severity, service, message, log_id))
+        conn.commit()
