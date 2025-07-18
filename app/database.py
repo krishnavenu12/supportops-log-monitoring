@@ -1,4 +1,3 @@
-# app/database.py
 import sqlite3
 
 DB_FILE = "logs.db"
@@ -35,4 +34,11 @@ def fetch_all_logs():
     rows = c.fetchall()
     conn.close()
     return [
-        {"timestamp": row[0], "severity": row[1], "serv
+        {
+            "timestamp": row[0],
+            "severity": row[1],
+            "service": row[2],
+            "message": row[3]
+        }
+        for row in rows
+    ]
